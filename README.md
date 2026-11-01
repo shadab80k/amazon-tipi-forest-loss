@@ -1,110 +1,160 @@
 # Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon (2000–2023)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://doi.org/10.5281/zenodo.placeholder)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Open Science](https://img.shields.io/badge/Open_Data-100%25_Reproducible-green.svg)]()
+<div align="center">
 
-This repository contains the complete reproducible data pipeline, analysis scripts, and statistical verification tests for the research paper:
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Open Data: Validated](https://img.shields.io/badge/Open%20Data-100%25%20Reproducible-success.svg?style=flat-square&logo=gitlfs&logoColor=white)]()
+[![Ethics: No--Contact Mandate](https://img.shields.io/badge/Data%20Ethics-Non--Contact%20Compliant-green.svg?style=flat-square&logo=shield&logoColor=white)]()
+[![Peer Review Status](https://img.shields.io/badge/Peer%20Review-In%20Submission-orange.svg?style=flat-square)]()
 
-> **"Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon: An Open-Data Geospatial Assessment (2000–2023)"**  
-> **Author:** Mohd Shadab (Independent Researcher; BS in Data Science & Applications, IIT Madras)  
-> **Preprint / Target Journal:** *Remote Sensing Applications: Society and Environment* (Elsevier) / *EarthArXiv*  
-> **Code & Data Repository:** [https://github.com/shadab80k/amazon-tipi-forest-loss](https://github.com/shadab80k/amazon-tipi-forest-loss)
+**An open-data, reproducible geospatial assessment of territorial buffering and deforestation frontiers across 81 Indigenous Lands hosting isolated peoples (*TIPI*) in the Brazilian Amazon.**
 
----
+[**Key Findings**](#-key-scientific-findings) • [**Methodology**](#-methodological-architecture) • [**Quickstart**](#-quickstart--reproduction) • [**Data Dictionary**](#-data-dictionary) • [**Ethics**](#-ethical-data-governance) • [**Citation**](#-citation)
 
-## 1. Research Overview
-Brazil hosts the world's largest concentration of isolated Indigenous peoples (*povos indígenas isolados*), who depend entirely on undisturbed forest ecosystems and face severe existential threats from contact-related epidemics. 
-
-While Indigenous Lands are known to inhibit deforestation generally, this project provides the **first territory-level quantitative assessment** separating the **81 Indigenous Lands hosting uncontacted peoples (TIPI)** from general Indigenous lands, evaluating them against:
-1. **Concentric Buffer Rings** (0–10 km and 10–50 km) around each territory (within-unit paired design).
-2. **155 Matched Control Indigenous Lands** from the same state and size class (across-unit design).
-
-### Key Scientific Findings
-- **Internal Protection:** Median forest loss inside TIPI over 2000–2023 was **1.01%** [IQR: 0.29% – 3.45%], compared to **3.66%** in the 0–10 km ring and **5.30%** in the 10–50 km ring (Wilcoxon signed-rank $p < 10^{-10}$, Cohen's $d_z = -0.725$, rank-biserial $r = -0.835$).
-- **Matched Contrast:** TIPIs lost significantly less forest internally than matched non-isolated Indigenous lands (median 1.01% vs 2.51%, Mann–Whitney $U = 4252, p < 10^{-4}$).
-- **Severe Spatial Concentration:** Deforestation in surrounding buffers is concentrated (Gini = 0.631), with the top 10 highest-pressure territories accounting for **48.5% (1.4 million ha)** of all 0–10 km ring loss.
-- **Institutional Buffering Under Assault:** Territories such as Uru-Eu-Wau-Wau and Baú maintained near-zero internal deforestation (2.27% and 0.25%, respectively) despite catastrophic external destruction (35.15% and 23.54% loss share) in their immediate 0–10 km surrounding rings.
-- **Accessibility Correlates:** Surrounding pressure correlates strongly with distance to municipal urban centers ($\rho = -0.457, p < 10^{-4}$), reflecting diffuse settlement frontiers.
+</div>
 
 ---
 
-## 2. Ethical Data Governance & Non-Contact Mandate
-This study complies strictly with Brazil's official 1987 no-contact policy, ILO Convention 169, and UNDRIP:
-- **No Field Contact:** Exclusively remote, public satellite imagery and administrative boundaries were used.
-- **Zero Coordinate Disclosure:** Point-level sighting coordinates and confidential OPI records are strictly **excluded** from this public repository to protect isolated groups from illegal incursions. All provided data are aggregated to officially gazetted Indigenous Land (*Terra Indígena*) boundaries.
+## 📌 Executive Summary
+
+Brazil hosts the world's largest concentration of uncontacted (isolated) Indigenous peoples (*povos indígenas isolados*), who live in voluntary avoidance of national society and face extreme mortality risks (18%–20% per epidemic) from contact-related pathogens. While extensive literature proves that Indigenous Lands in the Amazon inhibit deforestation generally, prior research uniformly treated Indigenous Lands as a homogeneous legal tenure category.
+
+This project delivers the **first territory-level quantitative assessment** isolating the **81 Indigenous Lands hosting uncontacted peoples (TIPI)**, covering 89.3 million hectares, and evaluates their internal forest loss against:
+1. **Concentric Buffer Rings** (0–10 km and 10–50 km) measuring surrounding landscape frontier pressure.
+2. **155 Matched Non-Isolated Indigenous Lands** controlling for state-level governance (UF) and territorial land area.
+
+Analysis covers **24 continuous years (2000–2023)** using the 30-meter Hansen/UMD Global Forest Change dataset (v1.11, canopy cover >30%).
 
 ---
 
-## 3. Repository Architecture
+## 🔬 Key Scientific Findings
+
+All numbers are computed from territory-level zonal counts and verified through non-parametric inference:
 
 ```text
-amazon-tipi-forest-loss/
-├── README.md                 # Master project documentation
-├── LICENSE                   # MIT Open Source License
-├── CITATION.cff              # Machine-readable software/dataset citation
-├── requirements.txt          # Python environment dependencies
-├── config.yaml               # Analysis configuration thresholds and parameters
-├── paper/                    # Publication manuscript (LaTeX source, PDF, sections)
-│   ├── manuscript.tex        # Master LaTeX document
-│   ├── sec_*.tex             # Modular paper sections
-│   ├── references.bib        # 23 verified BibTeX citations with direct DOIs
-│   └── manuscript.pdf        # Compiled submission manuscript
-├── data/
-│   ├── README.md             # Complete data dictionary & schema
-│   └── derived/
-│       ├── zonal_results.csv # Primary dataset (708 rows x 39 cols: annual loss & tree cover)
-│       ├── accessibility.csv # Infrastructure distances in EPSG:6933
-│       ├── summary_stats.csv # Descriptive statistics table
-│       ├── statistical_tests.csv # Formal hypothesis test statistics & Holm p-values
-│       └── key_stats.json    # Machine-readable numerical single source of truth
-├── figures/                  # High-resolution (300 dpi) publication figures
-│   ├── fig1_study_area.png   # Study area map
-│   ├── fig2_paired_zones.png # Paired inside vs 0-10km ring plot
-│   ├── fig3_annual_curves.png# Annual loss trajectory (2001-2023)
-│   ├── fig4_top_pressure.png # Top 20 pressure territories
-│   └── fig5_accessibility.png# Accessibility scatter plot
-├── tables/                   # Publication-ready LaTeX tables
-│   ├── tab_descriptive.tex   # Table 1: Descriptive summary
-│   ├── tab_tests.tex         # Table 2: Hypothesis test results
-│   └── tab_top10.tex         # Table 3: Top pressure hotspot territories
-├── scripts/
-│   └── verify_stats.py       # Standalone verification script (runs in <2 seconds)
-├── src/                      # Analysis & ingestion pipeline source code
-│   ├── acquisition/          # Data scraping scripts (FUNAI, OPI, RAISG)
-│   └── analysis/             # Zonal raster computation engine & statistical tests
-├── tests/                    # Pytest test suite & regression tests
-└── documentation/            # Supplementary research & ethics documentation
+==================================================================================================
+Zone / Comparison Cohort               n     Median Loss Share [IQR]       Mean    Total Forest Lost
+==================================================================================================
+TIPI Interior (Inside Boundary)       81     1.01% [0.29% – 3.45%]        3.13%      1,533,682 ha
+TIPI 0–10 km Surrounding Ring         81     3.66% [0.83% – 14.50%]       9.98%      2,880,999 ha
+TIPI 10–50 km Landscape Ring         81     5.30% [1.22% – 17.87%]      10.98%     16,344,613 ha
+Matched Control Lands (Inside)       155     2.51% [0.92% – 7.29%]        6.75%      1,006,569 ha
+==================================================================================================
+```
+
+### Core Statistical Highlights
+* **Stark Territorial Buffering (Within-Unit Contrast):** Forest loss inside TIPI was **3.6 times lower** than in immediate 0–10 km buffer rings ($W = 274.0, p = 6.66 \times 10^{-11}$, Cohen's $d_z = -0.725$, rank-biserial $r = -0.835$) and **5.3 times lower** than in wider 10–50 km landscape buffers ($W = 149.0, p = 1.11 \times 10^{-12}$, $r = -0.910$).
+* **Matched Contrast (Tenure Effect):** Uncontacted peoples' lands lost **2.5 times less forest** internally than comparable non-isolated Indigenous Lands within the same state and size cohort ($U = 4252.0, p = 4.77 \times 10^{-5}$, rank-biserial $r = -0.323$).
+* **Extreme Threat Concentration:** Deforestation in surrounding buffers is heavily concentrated (Gini index = **0.631**). The **top 10 highest-pressure territories account for 48.48% (1.40 million ha)** of all 0–10 km ring loss across the study.
+* **Institutional Fortresses Under Assault:** In **Uru-Eu-Wau-Wau (RO)**, the external 0–10 km buffer suffered 222,349 ha of clearing (35.15% ring loss share), yet inside the territory, deforestation was constrained to **2.27%**. In **Baú (PA)**, surrounding clearing reached 153,702 ha (23.54% ring loss share), while internal loss was held to just **0.25%**.
+* **Frontier Drivers:** Surrounding deforestation correlates significantly with proximity to municipal urban centers ($\rho = -0.457, p = 1.81 \times 10^{-5}$), capturing diffuse agricultural and settlement expansion.
+
+---
+
+## 🏗️ Methodological Architecture
+
+```mermaid
+flowchart LR
+    subgraph Open Ingestion
+        A[Official FUNAI Boundaries<br/>657 Polygons] --> D[Spatial Dissolve<br/>646 Unique TIs]
+        B[OPI Observatory<br/>115 Isolated Records] --> E[Spatial Overlap >100 ha]
+        D & E --> F[81 TIPI Cohort]
+        D --> G[155 Matched Controls<br/>1:2 State & Area Matched]
+    end
+
+    subgraph Equal-Area Processing
+        F & G --> H[EPSG:6933 Metric Frame]
+        H --> I[Concentric Buffer Generation<br/>Inside, 0-10km, 10-50km]
+    end
+
+    subgraph Raster Engine
+        I --> J[Hansen GFC v1.11 30m<br/>2000-2023 Time Series]
+        J --> K[Block-Streaming Zonal Engine<br/>20 10°x10° GeoTIFF Tiles]
+        K --> L[(zonal_results.csv<br/>708 Zonal Observations)]
+    end
+
+    subgraph Verification
+        L --> M[Paired Wilcoxon Tests]
+        L --> N[Mann-Whitney U Contrast]
+        L --> O[Gini & Inequality Metrics]
+    end
 ```
 
 ---
 
-## 4. Quickstart: Reproducing Results in 2 Minutes
+## 📂 Repository Structure
 
-### 4.1 Clone Repository
+```text
+amazon-tipi-forest-loss/
+├── README.md                      # Primary project documentation
+├── LICENSE                        # MIT Open Source License
+├── CITATION.cff                   # Machine-readable citation metadata
+├── requirements.txt               # Pinned Python package dependencies
+├── config.yaml                    # Analytical parameters, CRS, thresholds, seeds
+├── data/
+│   ├── README.md                  # Comprehensive data dictionary & schemas
+│   └── derived/
+│       ├── zonal_results.csv      # Primary 708-row territorial loss dataset
+│       ├── accessibility.csv      # Infrastructure distances in EPSG:6933
+│       ├── summary_stats.csv      # Aggregated summary statistics by zone & group
+│       ├── statistical_tests.csv  # Verified hypothesis test outputs & adjusted p-values
+│       ├── key_stats.json         # Single source of truth for manuscript statistics
+│       └── tile_log.csv           # Processing log of 20 Hansen GFC raster tiles
+├── paper/
+│   ├── manuscript.tex             # Master LaTeX manuscript
+│   ├── sec_*.tex                  # Modular manuscript sections (intro, methods, results, backmatter)
+│   ├── references.bib             # 23 verified BibTeX citations with direct DOIs
+│   ├── manuscript.pdf             # Compiled submission-ready PDF
+│   ├── figures/                   # 300 dpi publication-grade figures
+│   └── tables/                    # Formatted LaTeX publication tables
+├── figures/                       # Standalone high-resolution maps and plots (fig1–fig5)
+├── tables/                        # Standalone LaTeX tables (tab_descriptive, tab_tests, tab_top10)
+├── scripts/
+│   └── verify_stats.py            # Standalone zero-dependency verification script
+├── src/
+│   ├── acquisition/               # Data scrapers for FUNAI, OPI, and RAISG APIs
+│   └── analysis/                  # Zonal extraction engine and statistical models
+├── tests/
+│   ├── test_smoke.py              # Pytest suite with geometry & transform regression tests
+│   └── conftest.py                # Pytest configuration
+└── documentation/
+    ├── ethics_protocol.md         # 6-point Indigenous data governance protocol
+    ├── search_strategy.md         # Literature verification strategy & queries
+    └── literature_matrix.csv      # Matrix of 26 evaluated scientific sources
+```
+
+---
+
+## ⚡ Quickstart & Reproduction
+
+Reproduce 100% of numerical calculations, sample sizes, Wilcoxon tests, Mann-Whitney U statistics, and Gini concentration indices in under 2 seconds:
+
+### 1. Clone Repository
 ```bash
 git clone https://github.com/shadab80k/amazon-tipi-forest-loss.git
 cd amazon-tipi-forest-loss
 ```
 
-### 4.2 Setup Environment
+### 2. Environment Setup
 ```bash
 python -m venv .venv
+
 # On Windows:
 .venv\Scripts\activate
-# On Linux/macOS:
+
+# On Linux / macOS:
 source .venv/bin/activate
 
 pip install -r requirements.txt
 ```
 
-### 4.3 Run Statistical Verification
-To independently reproduce every sample size, median, IQR, Wilcoxon test, Mann-Whitney U test, Spearman correlation, and Gini coefficient reported in the paper:
+### 3. Run Statistical Verification
 ```bash
 python scripts/verify_stats.py
 ```
-*Expected Output:*
+
+*Terminal Output:*
 ```text
 =======================================================
 SAMPLE SIZES:
@@ -122,31 +172,54 @@ H1a (Inside vs Ring 1): Wilcoxon W=274.0, p=6.6640e-11 (Holm-adj p=2.6656e-10)
 H1b (Inside vs Ring 2): Wilcoxon W=149.0, p=1.1065e-12 (Holm-adj p=5.5324e-12)
 Group Contrast (TIPI vs Controls): Mann-Whitney U=4252.0, p=4.7701e-05 (Holm-adj p=9.5402e-05)
 H2a (Distance to City): Spearman rho=-0.4568, p=1.8111e-05 (Holm-adj p=5.4332e-05)
+
+--- 3. CONCENTRATION & INEQUALITY METRICS ---
+Gini coefficient of Absolute 0-10 km Ring Loss (ha): 0.6315
+Gini coefficient of Ring Loss Share (%):            0.6075
+Top 10 share of aggregate 0-10 km ring loss:        48.48% (1,396,820 ha)
 ```
 
 ---
 
-## 5. Primary Data Sources
-1. **Indigenous Lands Boundaries:** National Foundation of Indigenous Peoples (FUNAI), *Terras Indígenas do Brasil — Delimitações Oficiais*, exported via Esri BR_Content FeatureServer (657 polygons).
-2. **Isolated Peoples Presence:** Observatório para a Proteção dos Povos Isolados e de Recente Contato (OPI), *Áreas de Ocupação* and registry records.
-3. **Forest Loss (2000–2023):** Hansen/UMD Global Forest Change dataset (v1.11), 30 m spatial resolution, canopy cover threshold >30%.
-4. **Amazon Biome Mask:** RAISG / OTCA 2024 *LimBiogeografico* layer.
+## 📊 Data Dictionary
+
+| File | Description | Primary Columns |
+|---|---|---|
+| `data/derived/zonal_results.csv` | Full territory-level time-series (708 rows $\times$ 39 cols) | `ti_name`, `has_isolated`, `is_control`, `uf`, `fase`, `area_ha_official`, `zone`, `tree2000_px`, `loss_px_2000_2023`, `loss_share_tree2000`, `loss_ha_approx`, `loss_px_y2001`–`loss_px_y2023` |
+| `data/derived/accessibility.csv` | Geographic distances computed in EPSG:6933 | `ti_name`, `has_isolated`, `dist_highway_km`, `dist_railway_km`, `dist_city_km` |
+| `data/derived/summary_stats.csv` | Summary distributions by analytical cohort | `group`, `zone`, `n`, `median_loss_share`, `mean_loss_share`, `iqr_lo`, `iqr_hi`, `total_loss_ha` |
+| `data/derived/statistical_tests.csv` | Exact non-parametric test statistics | `test`, `n_pairs_with_diff`, `wilcoxon_W`, `wilcoxon_p`, `cohens_dz`, `rank_biserial_r`, `p_holm_adj` |
+| `data/derived/key_stats.json` | JSON single source of truth | Machine-readable anchors for LaTeX text integration |
 
 ---
 
-## 6. Citation
+## 🛡️ Ethical Data Governance
+
+Research involving isolated Indigenous peoples is bounded by binding international and constitutional norms:
+
+1. **Non-Contact Principle:** This study complies with FUNAI's official 1987 no-contact policy, ILO Convention 169, and UNDRIP. No field work, overflights, interviews, or interactions of any kind were proposed or conducted.
+2. **Zero Location Disclosure:** **No point coordinates, encampment locations, or sensitive sighting records are published.** The OPI isolated-peoples record layer (`te_amz_povos_isolados`) was used solely locally to link presence to gazetted territorial names. All outputs are strictly aggregated to legally established Indigenous Land (*Terra Indígena*) boundaries (public policy artifacts).
+3. **Repository Safeguards:** The repository `.gitignore` blocks raw point files (`*.geojson`, `data/raw/`) from ever being committed to public version control.
+
+---
+
+## 📖 Citation
+
+If you use this dataset, methodology, or code in your academic work, please cite:
+
 ```bibtex
 @article{shadab2026tipi,
   author    = {Shadab, Mohd},
   title     = {Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon: An Open-Data Geospatial Assessment (2000--2023)},
   journal   = {Remote Sensing Applications: Society and Environment},
   year      = {2026},
-  note      = {Under peer review; preprint available at EarthArXiv}
+  note      = {Under peer review. Code and data repository: https://github.com/shadab80k/amazon-tipi-forest-loss}
 }
 ```
 
 ---
 
-## 7. License
-- **Code & Scripts:** Licensed under the [MIT License](LICENSE).
-- **Data & Tables:** Licensed under [Creative Commons Attribution 4.0 International (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+## 📜 License
+
+- **Code & Pipelines:** [MIT License](LICENSE) © 2026 Mohd Shadab.
+- **Data & Documentation:** [Creative Commons Attribution 4.0 International (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
