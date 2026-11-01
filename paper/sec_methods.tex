@@ -1,0 +1,65 @@
+\section{Data}\label{sec:data}
+
+\subsection{Territory boundaries}
+We use the official FUNAI registry of Indigenous Lands (\emph{Terras Ind\'igenas do Brasil --- Delimita\c{c}\~oes Oficiais FUNAI}), exported on 2026-10-29 as 657 polygons with attributes for name, legal stage, modality, and official area. After name-based dissolving (11 duplicate polygons), 646 distinct territories remain. Territory polygons are public policy artefacts; we treat their boundaries as given and discuss positional uncertainty in Section~\ref{sec:limitations}.
+
+\subsection{Isolated-peoples presence}
+Presence of uncontacted peoples is established from the OPI observatory (\emph{Observat\'orio para a Prote\c{c}\~ao dos Povos Isolados e de Recente Contato}), whose platform and GeoServer mirror FUNAI's record system: 115 active records (29 \emph{confirmed}, 26 \emph{under study}, 60 \emph{information}), closely matching the 114 records documented by FUNAI's own audit \citep{funai_audit_2024,opi2025}. OPI further publishes two mapped polygon sets per record: an \emph{occupation area} (\emph{\'area de ocupa\c{c}\~ao}) and a surrounding \emph{entorno area}. We define a territory as a \emph{TIPI} (Indigenous Land with isolated-peoples presence) if it intersects at least one occupation area by more than 100\,ha. This spatial rule yields 81 TIPI; 32 of them are additionally matched by explicit record-to-territory name linkage. The spatial rule is deliberately inclusive: it captures territories that host isolated presence documented by occupation areas even when the record-to-name link is indirect. We report a sensitivity analysis on the stricter name-linked subset (Section~\ref{sec:results}). The record-coordinate layer is used only for this validation and is never published (Section~\ref{sec:ethics}).
+
+\subsection{Forest cover change}
+Forest loss is measured with the Hansen/UMD Global Forest Change dataset, version GFC-2023-v1.11 \citep{hansen2013,gfc_dataset}: 30\,m rasters of year-2000 tree cover (\emph{treecover2000}) and annual loss year (\emph{lossyear}, 2001--2023). We define forest as pixels with tree cover above the standard 30\% canopy threshold and forest loss as a loss-year pixel under that mask. The study window is therefore 2000--2023. GFC detects gross clearing and industrial loss at 30\,m; it does not capture sub-canopy degradation --- a limitation for logging fronts but appropriate here, since small clearings dominate recent Amazonian loss \citep{kalamandeen2018}.
+
+\subsection{Accessibility covariates}
+As accessibility proxies we evaluate linear infrastructure and settlement proximity using OPI's regional GIS layers: mapped utility and pipeline corridors (123 features; \emph{dutovias}), railway concessions and projects (676 features; \emph{ferrovias}), and municipal city/town points (1{,}054 features; \emph{cidades}) within the Amazon biome, combined with the RAISG/OTCA 2024 Amazon biome boundary (698.3 million hectares) \citep{raisg2024}. Euclidean distances are computed from territory boundaries to the nearest infrastructure feature in the equal-area metric frame EPSG:6933. While trunk highway corridors (such as BR-163 and BR-230) are recognized drivers of regional expansion, city distances specifically measure proximity to urban market hubs, secondary road networks, and riverine trading posts that drive diffuse frontier encroachment.
+
+\subsection{Official protection status}
+FUNAI's internal audit report RA-028/2 (2024) supplies the official counts used for context: 114 records, three evidentiary categories, twelve records with no territorial protection, and a staffing deficit of 74 of 156 authorised field posts \citep{funai_audit_2024}.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Data sources. All layers are public; access dates 2026-10-29.}
+\label{tab:data}
+\begin{tabularx}{\columnwidth}{l >{\raggedright\arraybackslash}X l l}
+\toprule
+Layer & Source & Version/date & Role \\
+\midrule
+Indigenous Land boundaries & FUNAI (official delimitations) & 2026-10-29 export & study units \\
+Isolated-peoples occupation areas and records & OPI GeoServer (WFS) & 2026-10-29 export & TIPI definition \\
+Forest cover change 2000--2023 & Hansen/UMD GFC v1.11 & 2023 vintage & response variable \\
+Utility corridors, railways, cities & OPI layers & 2026-10-29 export & accessibility \\
+Amazon biome boundary & RAISG/OTCA & 2024 & study-area mask \\
+Protection audit & FUNAI Audin RA-028/2 & 2024 & policy context \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Methods}\label{sec:methods}
+
+\subsection{Study design}
+The unit of analysis is the Indigenous Land. We employ two complementary comparison structures, following the matched-control and buffer logic standardised in protected-area effectiveness research \citep{andam2008,joppa2010}:
+
+\begin{enumerate}[leftmargin=1.4em, itemsep=1pt]
+\item \textbf{Matched group contrast (RQ1a).} Each TIPI ($n=81$) is matched 1:2, without replacement, to non-isolated Indigenous Lands from the same state (UF) with the nearest log-area (160 controls; 155 fall within the analysis extent). This controls for state-level governance and for scale effects while comparing otherwise similar tenure categories.
+\item \textbf{Buffer rings (RQ1b).} For every TIPI we construct two concentric rings around its boundary: 0--10\,km and 10--50\,km. Rings capture the surrounding pressure regime at two distances and enable a paired within-territory comparison that removes region-level confounding. Rings may include other protected lands, which makes the inside-vs-ring contrast conservative.
+\end{enumerate}
+
+Buffers and rings are computed in the equal-area frame EPSG:6933. For rasterisation only, geometries are simplified with a 0.0005$^\circ$ ($\approx$55\,m, about two GFC pixels) tolerance, which is negligible relative to ring widths of 40\,km; zone areas are always computed from the unsimplified buffers.
+
+\subsection{Zonal forest-loss computation}
+For each territory and zone we count (i) year-2000 tree-cover pixels (canopy $>$30\%) and (ii) loss pixels by year (lossyear 1--23 under the tree mask). The primary response is the \emph{loss share}: the fraction of a zone's year-2000 tree cover lost by 2023. Pixel counts are exact within the native Web-Mercator-free GFC grid (EPSG:4326, 0.00025$^\circ$); hectares are approximated with a per-window mean-latitude pixel-area factor (maximum $\sim$1\% bias across the latitudinal span of a window) and are used for interpretable magnitudes, while the primary metric is the pixel ratio.
+
+A practical constraint shaped the implementation: GFC GeoTIFF tiles are row-striped with full-width 40{,}000-pixel rows, so windowed reads fetch whole rows. We therefore stream each required tile in row blocks (1{,}500 rows $\times$ 40{,}000 columns) and process all candidate territories intersecting each block, fetching only row ranges actually spanned by study territories. The engine is crash-safe (per-tile progress bookkeeping) and covered by unit tests, including a regression test for a block-boundary georeferencing bug that we detected and fixed during development. All 81 TIPI and 155 controls were processed across 20 GFC tiles with no errors; every territory returned valid tree-cover counts.
+
+\subsection{Statistics}
+Primary hypotheses are tested on paired territory-level values:
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt]
+\item \textbf{H1.} Median loss share inside TIPI is lower than in each ring (two-sided Wilcoxon signed-rank; paired $t$ reported for completeness).
+\item \textbf{H2.} Ring-0--10\,km loss share is negatively associated with distance to the nearest city and utility corridor (Spearman correlation).
+\item \textbf{H3.} Pressure is concentrated: measured by the Gini coefficient and the top-quintile share of absolute 0--10\,km ring loss (hectares).
+\end{itemize}
+The TIPI-versus-controls contrast uses a two-sided Mann--Whitney $U$ test with the rank-biserial effect size. We report Cohen's $d_z$ and rank-biserial $r$ for paired tests. Family-wise error across the primary/secondary tests is controlled with Holm--Bonferroni adjustment. No Gaussian assumptions are made for inference; means are reported alongside medians for context only.
+
+\subsection{Reproducibility}
+The entire analysis --- data acquisition, territory construction, zonal computation, statistics, and figures --- is scripted (Python 3.12; \texttt{geopandas}, \texttt{rasterio}, \texttt{numpy}, \texttt{pandas}, \texttt{scipy}), seeded (20260101) where randomness exists (matching), and re-runnable end-to-end with one command from the open repository. Machine-readable outputs (CSV/JSON) are emitted at every stage, and every number in this paper is traceable to a result file.
+

@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{etoolbox}
+\usepackage[numbers,sort&compress]{natbib}
+\bibliographystyle{unsrtnat}
+% ragged-right bibliography: avoids justification under/overfull boxes with long DOIs/URLs
+\apptocmd{\thebibliography}{\raggedright\footnotesize}{}{}
+\setlength{\emergencystretch}{2em}
+
+% hyperref last among content packages
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    citecolor=blue!40!black,
+    urlcolor=blue!50!black,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    unicode=true
+]{hyperref}
+
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\setlength{\headheight}{14pt}
+\widowpenalty=10000
+\clubpenalty=10000
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Forest loss pressure on Indigenous Lands with uncontacted peoples}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\captionsetup{font=small, labelfont=bf}
+
+\newcommand{\tipi}{TIPI}
+
+\hypersetup{
+    pdftitle={Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon (2000-2023)},
+    pdfauthor={Mohd Shadab},
+    pdfsubject={Open-data geospatial assessment of forest cover change on Indigenous Lands hosting uncontacted peoples},
+    pdfkeywords={uncontacted peoples, isolated peoples, Indigenous Lands, deforestation, Brazilian Amazon, Global Forest Change}
+}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE\bfseries Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon: An Open-Data Geospatial Assessment (2000--2023)}\\[10pt]
+    {\normalsize Mohd Shadab\thanks{Independent researcher. BS in Data Science and Applications (student), Indian Institute of Technology Madras --- stated for identification only; no institutional endorsement, supervision, or sponsorship is implied. Correspondence: author's repository (see Data and Code Availability).}}\\[6pt]
+    {\small Preprint --- November 2026}
+\end{center}
+
+\vspace{6pt}
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Abstract.}
+Brazil hosts the world's largest concentration of uncontacted (isolated) Indigenous peoples, yet no published quantitative assessment measures how much forest loss occurs inside and around the Indigenous Lands that host them, as distinct from Indigenous lands in general. Using only open data --- official FUNAI territory boundaries (657 lands), mapped isolated-peoples occupation areas and records from the OPI observatory (115 records; 29 state-confirmed), and the Hansen/UMD Global Forest Change dataset (2000--2023, canopy cover $>$30\%) --- we compare forest loss inside 81 Indigenous Lands with isolated-peoples presence (\tipi{}) against (i) 155 matched non-isolated Indigenous Lands and (ii) surrounding 0--10\,km and 10--50\,km buffer rings. Median loss of year-2000 tree cover inside \tipi{} was 1.01\%, versus 3.66\% in the 0--10\,km ring and 5.30\% in the 10--50\,km ring (Wilcoxon signed-rank $p<10^{-10}$, large effects); \tipi{} also lost significantly less forest than matched controls (2.51\% median; Mann--Whitney $p<10^{-4}$). Pressure is strongly spatially concentrated (Gini 0.63): the ten highest-pressure territories account for nearly half (48.5\%) of aggregate surrounding loss, led by Uru-Eu-Wau-Wau (222{,}349\,ha of ring loss; 35.1\% ring loss share while holding inside loss to 2.27\%) and Ba\'u (153{,}702\,ha ring loss; 23.5\% ring loss share with only 0.25\% inside loss). Ring pressure was strongly associated with distance to urban centers ($\rho=-0.457$, $p<10^{-4}$), reflecting diffuse settlement frontier dynamics. These results quantify, for the first time at territory level, the buffering function of uncontacted peoples' lands and identify where Brazil's protection apparatus --- audited in 2024 as under-staffed and leaving 12 records without any territorial protection --- is most urgently needed. All code, data provenance, and statistics are fully reproducible from the open repository. The study involves no field contact and publishes no settlement locations, in line with the no-contact policy for isolated peoples.
+\vspace{4pt}
+
+\textbf{Keywords:} uncontacted peoples; isolated peoples; \textit{povos ind\'igenas isolados}; Indigenous Lands; deforestation; Brazilian Amazon; forest cover change; protected areas; geospatial analysis
+\end{minipage}
+\end{center}
+
+\input{sec_intro_related}
+\input{sec_methods}
+\input{sec_results_discussion}
+\input{sec_backmatter}
+
+\bibliography{references}
+
+\end{document}
+

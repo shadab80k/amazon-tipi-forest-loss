@@ -1,0 +1,64 @@
+{
+ "n_tipi": 81,
+ "n_other_tis": 155,
+ "gini_ring1": 0.6074823191675022,
+ "top20pct_share_ring1": 0.6063951109717809,
+ "tests": [
+  {
+   "test": "inside_vs_ring1_loss_share",
+   "n_pairs_with_diff": 81,
+   "median_inside": 0.010080802730723,
+   "median_ring": 0.0365974643230688,
+   "mean_inside": 0.03125705133539218,
+   "mean_ring": 0.09982700865226397,
+   "wilcoxon_W": 274.0,
+   "wilcoxon_p": 6.663958013210057e-11,
+   "paired_t": -6.524945166566359,
+   "paired_t_p": 5.711474382160109e-09,
+   "cohens_dz": -0.724993907396262,
+   "rank_biserial_r": -0.8349894610057211,
+   "p_holm_adj": 2.6655832052840227e-10
+  },
+  {
+   "test": "inside_vs_ring2_loss_share",
+   "n_pairs_with_diff": 81,
+   "median_inside": 0.010080802730723,
+   "median_ring": 0.0529962792891515,
+   "mean_inside": 0.03125705133539218,
+   "mean_ring": 0.10982008521800075,
+   "wilcoxon_W": 149.0,
+   "wilcoxon_p": 1.1064850514687818e-12,
+   "paired_t": -7.497844253830562,
+   "paired_t_p": 7.731035305668326e-11,
+   "cohens_dz": -0.8330938059811734,
+   "rank_biserial_r": -0.9102679915688046,
+   "p_holm_adj": 5.532425257343909e-12
+  },
+  {
+   "test": "TIPI_vs_others_inside_MWU",
+   "n_pairs_with_diff": 0,
+   "median_tipi": 0.010080802730723,
+   "median_others": 0.0250701999226539,
+   "mannwhitney_U": 4252.0,
+   "mwu_p": 4.7700834655147075e-05,
+   "rank_biserial_r": -0.3226602947033055,
+   "p_holm_adj": 9.540166931029415e-05
+  },
+  {
+   "test": "spearman_dist_highway_km_vs_ring1",
+   "n": 81,
+   "rho": -0.15806233062330624,
+   "p": 0.1587385017960869,
+   "p_holm_adj": 0.1587385017960869
+  },
+  {
+   "test": "spearman_dist_city_km_vs_ring1",
+   "n": 81,
+   "rho": -0.45684281842818425,
+   "p": 1.8110712065197815e-05,
+   "p_holm_adj": 5.4332136195593446e-05
+  }
+ ],
+ "window": "2000-2023 (GFC-2023-v1.11, canopy>30%)",
+ "zones": "inside TI; 0-10 km ring; 10-50 km ring"
+}

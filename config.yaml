@@ -1,0 +1,27 @@
+# Analysis configuration (single source of truth for thresholds/radii)
+gfc:
+  version: "GFC-2023-v1.11"
+  base_url: "https://storage.googleapis.com/earthenginepartners-hansen/GFC-2023-v1.11/Hansen_GFC-2023-v1.11_{band}_{tile}.tif"
+  pixel_deg: 0.00025
+  canopy_threshold: 30      # % tree cover in 2000
+  loss_years: [2000, 2023]
+
+zones:
+  ring1_m: 10000
+  ring2_m: 50000
+  margin_deg: 0.5
+
+study:
+  seed: 20260101
+  n_controls_per_tipi: 2
+  equal_area_crs: "EPSG:6933"
+  min_overlap_ha: 100       # occupation-area x TI overlap sliver threshold
+
+zonal_engine:
+  block_rows: 1500
+
+sources:
+  funai_tis: "https://services5.arcgis.com/qF5YxIC9zJuMN2dV/arcgis/rest/services/terras_indigenas/FeatureServer/0"
+  opi_geoserver: "https://geoserver.povosisolados.org/geoserver/opi_observatory/ows"
+  raisg_biome: "https://services5.arcgis.com/ys9ZOA2LzLraNRFP/arcgis/rest/services/LimBiogeografico/FeatureServer/0"
+  funai_audit_pdf: "http://www.gov.br/funai/pt-br/acesso-a-informacao/auditorias/sei_funai-6990437-relatorio-final-ra-028_2.pdf/@@display-file/file"

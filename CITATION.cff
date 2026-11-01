@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this dataset, methodology, or analysis code in your academic work, please cite it as below."
+authors:
+  - family-names: "Shadab"
+    given-names: "Mohd"
+    affiliation: "Indian Institute of Technology Madras (Student, BS in Data Science & Applications)"
+    email: "mohdshadab4549@gmail.com"
+title: "Forest Loss Pressure on Indigenous Lands with Uncontacted Peoples in the Brazilian Amazon (2000-2023)"
+version: 1.0.0
+date-released: 2026-11-01
+url: "https://github.com/shadab80k/amazon-tipi-forest-loss"
+license: MIT
+keywords:
+  - "uncontacted peoples"
+  - "isolated peoples"
+  - "Indigenous Lands"
+  - "Brazilian Amazon"
+  - "deforestation"
+  - "Global Forest Change"
+  - "geospatial analysis"
+  - "buffer zones"
