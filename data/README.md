@@ -54,3 +54,4 @@ Summary descriptive tables (medians, means, IQRs, totals) and formal hypothesis 
 
 ### 2.4 `key_stats.json`
 Machine-readable single source of truth containing verified numerical anchors for automated integration into LaTeX tables and manuscript text.
+
